@@ -1,0 +1,64 @@
+\chapter*{Introducción}\label{chapter:introduction}
+\addcontentsline{toc}{chapter}{Introducción}
+
+En un mundo cada vez más interconectado, la seguridad de la información se ha convertido en una necesidad fundamental. La criptografía, como disciplina, juega 
+un papel crucial en la protección de datos, proporcionando confidencialidad, integridad y autenticación en diversos sistemas tecnológicos. Desde la 
+protección de comunicaciones personales hasta el aseguramiento de transacciones bancarias, sus aplicaciones son amplias y esenciales para el desarrollo de un entorno 
+digital confiable. Dos de las tecnologías que fundamentan su seguridad son las \textbf{infraestructuras de clave pública} (\textit{PKI}) y la \textbf{\textit{blockchain}}.
+
+Una de las principales ventajas de las \textit{PKI} es que proporcionan \textbf{autenticación fuerte}, ya que las claves privadas son únicas para cada 
+entidad y solo estas pueden ser utilizadas para firmar o cifrar datos. Además, la \textbf{integridad de los datos} se asegura mediante el uso de firmas 
+digitales, garantizando que los mensajes no sean alterados durante su transmisión. Otro beneficio clave de las \textit{PKI} es su capacidad para manejar grandes volúmenes 
+de certificados y claves a través de un sistema organizado de autoridades certificadoras (\textit{CA}), lo que permite la gestión eficiente de la autenticación a gran escala.
+
+La tecnología \textbf{\textit{blockchain}}, desde su surgimiento, también ha tenido un impacto enorme en el ámbito de la informática y las finanzas. Se caracteriza por 
+su naturaleza \textbf{descentralizada}, \textbf{inmutable} y \textbf{transparente}, lo que la convierte en una solución ideal para aplicaciones que requieren registros 
+seguros, auditables y verificables, como las transacciones financieras y la gestión de contratos inteligentes. \textit{Blockchain} permite a las partes interactuar de manera confiable 
+sin necesidad de \textit{intermediarios}, lo cual reduce significativamente los costos y riesgos asociados a las transacciones digitales.
+
+A pesar de representar enfoques distintos, se podría aprovechar lo mejor de ambas tecnologías a partir de la integración conjunta de las mismas. Una \textit{PKI} puede proporcionar una \textbf{autenticación robusta} 
+y una \textbf{gestión eficiente de claves} para los nodos de la \textit{blockchain}, asegurando que solo los participantes legítimos puedan interactuar con la red. Aunque \textit{blockchain} asegura la integridad de los datos mediante su estructura 
+descentralizada y su consenso distribuido, la identificación y verificación de los participantes de la red aún requieren mecanismos seguros, como los proporcionados por una \textit{PKI}. A través de este enfoque conjunto, la combinación de 
+ambas tecnologías podría mejorar significativamente la confianza en los sistemas basados en \textit{blockchain}, especialmente en contextos donde la autenticidad de los participantes y la seguridad de las transacciones son críticos.
+
+\section{Diseño Teórico}
+\subsection*{Problema Científico}
+
+Las redes blockchain requieren mecanismos seguros y confiables para la autenticación de nodos, evitando ataques de suplantación de identidad y mejorando la confianza en la red. Sin embargo, las soluciones tradicionales de autenticación suelen ser centralizadas o difíciles de integrar en sistemas distribuidos. 
+
+\subsection*{Pregunta científica:} ¿Es posible implementar un mecanismo de validación confiable para los nodos de una red blockchain de Hyperledger Fabric utilizando una PKI externa?
+
+\subsection*{Objeto de Estudio}
+Infraestructura de clave pública aplicada a la redes blockchain para la autenticación segura de nodos.
+
+\subsection*{Objetivo General}\
+Diseñar e implementar una Autoridad Certificadora (CA) como mecanismo de autenticación segura de los nodos en la red Blockchain.
+
+\subsection*{Objetivos específicos}\
+\begin{enumerate}
+    \item Analizar los esquemas de autenticación utilizados en redes .
+    \item Diseñar una CA adaptada a las necesidades de autenticación de nodos en blockchain.
+    \item Implementar la solución en un entorno de prueba utilizando herramientas de seguridad criptográfica.
+    \item Evaluar el rendimiento y seguridad de la solución propuesta en comparación con otros métodos de autenticación.
+\end{enumerate}
+
+\subsection*{Campo de Acción}
+La plataforma de Hyperledger Fabric
+
+\subsection*{Hipótesis}
+La implementación de una PKI en una red blockchain permitirá mejorar la seguridad y confiabilidad de la autenticación de nodos, reduciendo el riesgo de ataques de suplantación de identidad y fortaleciendo la integridad del ecosistema distribuido.
+
+\section{Estructura del trabajo}
+
+Esta tesis está organizada en tres capítulos principales, los cuales se describen a continuación:
+
+\begin{itemize}
+    \item \textbf{Capítulo 1: Preliminares} \\
+    En este capítulo se aborda el marco teórico necesario para comprender los conceptos fundamentales sobre PKI y blockchain. El objetivo es proporcionar al lector el conocimiento necesario para entender los conceptos clave que se desarrollarán en el resto del trabajo.
+    
+    \item \textbf{Capítulo 2: Estado del Arte} \\
+    Este capítulo presenta un informe sobre los trabajos más recientes relacionados con el tema de la tesis. Se analiza la literatura existente sobre PKI y blockchain, con especial énfasis en la integración de ambas.
+    
+    \item \textbf{Capítulo 3: Resultados y Discusión} \\
+    En este capítulo se expone la solución propuesta, explicando en detalle cómo se lleva a cabo la implementación de la PKI para la autenticación segura de nodos en Hyperledger Fabric. Además, se realiza una discusión sobre los resultados obtenidos y su comparación con soluciones existentes.
+\end{itemize}

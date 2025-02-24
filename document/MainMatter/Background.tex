@@ -1,0 +1,76 @@
+\chapter{Estado del Arte}
+
+Este capítulo explora diversas propuestas que integran blockchain en la PKI, analizando sus ventajas, desafíos y aplicaciones prácticas. Se examinarán modelos como CertLedger, que utiliza blockchain para mejorar la transparencia y seguridad en la gestión de certificados digitales, y otras arquitecturas que buscan superar las limitaciones de las PKI tradicionales mediante enfoques descentralizados y dinámicos. A través de este análisis, se pretende proporcionar una visión comprensiva del estado actual de la tecnología y su potencial para revolucionar la gestión de identidades digitales en diversos.
+
+\section{CertLedger: Un Nuevo Modelo de PKI con Transparencia de Certificados Basado en Blockchain}
+
+En 2018, Kubilay, Kiraz y Mantar introdujeron CertLedger \cite{Kubilay2018}, una arquitectura de PKI que utiliza blockchain para mejorar la transparencia y seguridad en la gestión de certificados digitales. A diferencia de las PKI tradicionales, donde las Autoridades Certificadoras (CA) son entidades centralizadas y de confianza, CertLedger propone registrar todos los eventos relacionados con certificados, como emisión, renovación y revocación, en una blockchain pública. Este enfoque busca eliminar ataques como el ``split-world'' y reducir la dependencia de las CA tradicionales.
+
+\textbf{Ventajas:}
+
+\begin{itemize}
+  \item \textbf{Transparencia y Trazabilidad:} Al registrar todas las operaciones en una blockchain pública, se garantiza una trazabilidad completa de los certificados, facilitando auditorías y aumentando la confianza en el sistema.
+  \item \textbf{Eliminación de Intermediarios:} Al centralizar la gestión de certificados en la blockchain, se reduce la necesidad de intermediarios, disminuyendo costos y simplificando la infraestructura.
+  \item \textbf{Revocación Eficiente:} La revocación de certificados comprometidos se gestiona de manera rápida y confiable, asegurando que los nodos no validen información desactualizada o fraudulenta.
+\end{itemize}
+
+\textbf{Desventajas:}
+
+\begin{itemize}
+  \item \textbf{Escalabilidad:} Las soluciones basadas en blockchain pueden enfrentar dificultades para manejar grandes volúmenes de transacciones en tiempo real, lo que podría afectar su rendimiento en entornos de alta demanda.
+  \item \textbf{Adopción Empresarial:} La implementación de este modelo en entornos corporativos puede ser desafiante debido a la necesidad de interoperabilidad con sistemas existentes y posibles resistencias al cambio.
+\end{itemize}
+
+\section{PKI Dinámica Descentralizada Basada en Blockchain}
+
+Toorani y Gehrmann, en 2020, propusieron un modelo de PKI dinámico que combina blockchain con el concepto de "web of trust" \cite{Toorani2020}. Este enfoque busca superar las limitaciones de las PKI tradicionales al permitir la validación de certificados entre usuarios sin depender de autoridades centralizadas. En su propuesta, blockchain actúa como un registro descentralizado e inmutable para los certificados digitales, proporcionando transparencia y resistencia a ataques. El modelo adopta la "web of trust", donde los usuarios pueden validar y firmar mutuamente sus certificados, distribuyendo la confianza de manera dinámica. Además, es un sistema adaptable que permite agregar nuevos participantes y revocar certificados sin necesidad de reconstruir toda la infraestructura.
+
+\textbf{Ventajas:}
+
+\begin{itemize}
+  \item \textbf{Descentralización:} Elimina la dependencia de una autoridad certificadora única, reforzando la seguridad y reduciendo puntos únicos de fallo.
+  \item \textbf{Escalabilidad:} Permite la incorporación de nuevos participantes en la red sin necesidad de reestructurar la infraestructura existente.
+  \item \textbf{Transparencia:} Todas las transacciones relacionadas con los certificados se registran en la blockchain, facilitando auditorías y aumentando la confianza en el sistema.
+  \item \textbf{Adaptabilidad:} El sistema se ajusta a diferentes necesidades y contextos, permitiendo una gestión flexible de certificados.
+\end{itemize}
+
+\textbf{Desventajas:}
+
+\begin{itemize}
+  \item \textbf{Complejidad Operativa:} En redes grandes, la gestión de la confianza distribuida puede ser compleja y requerir una coordinación significativa entre los participantes.
+  \item \textbf{Infraestructura Requerida:} La implementación requiere una infraestructura blockchain robusta, lo que puede ser costoso y técnicamente desafiante.
+  \item \textbf{Desempeño:} El sistema puede ser más lento que una PKI centralizada debido a las limitaciones inherentes de la tecnología blockchain.
+  \item \textbf{Establecimiento de Confianza Inicial:} Establecer relaciones de confianza en redes completamente nuevas puede ser un reto significativo.
+\end{itemize}
+\section{PKI Basada en Blockchain dentro de una Organización Corporativa: Ventajas y Desafíos}
+
+En 2024, Springer y Haindl analizaron cómo la tecnología blockchain puede integrarse en una PKI dentro de una organización corporativa, comparándola con los sistemas PKI tradicionales \cite{Springer2024}. Los principales enfoques del estudio incluyen la descentralización de la confianza, la inmutabilidad y la transparencia de los certificados, la auditoría mejorada y la reducción de costos operativos.
+
+\textbf{Ventajas:}
+
+\begin{itemize}
+  \item \textbf{Descentralización de la Confianza:} Blockchain permite distribuir la confianza entre varios nodos, eliminando la necesidad de una autoridad central y mejorando la resiliencia del sistema ante posibles ataques.
+  \item \textbf{Inmutabilidad y Transparencia:} Blockchain asegura que los registros de certificados no puedan ser alterados una vez emitidos, garantizando su integridad. Además, la transparencia de blockchain permite auditar continuamente todas las transacciones, facilitando la detección y resolución de problemas relacionados con los certificados.
+  \item \textbf{Reducción de Costos Operativos:} La adopción de blockchain puede reducir los costos operativos al eliminar la necesidad de intermediarios y simplificar los procesos manuales en la gestión de certificados.
+\end{itemize}
+
+\textbf{Desventajas:}
+
+\begin{itemize}
+  \item \textbf{Complejidad de Implementación:} Integrar una PKI basada en blockchain en una organización puede requerir una reestructuración significativa de la infraestructura existente, lo que implica desafíos técnicos y operativos.
+  \item \textbf{Cumplimiento Normativo:} El cumplimiento de normativas regulatorias y legales representa un desafío adicional, ya que las organizaciones deben asegurarse de que la implementación de la blockchain cumpla con las leyes y regulaciones vigentes.
+  \item \textbf{Escalabilidad:} Las soluciones basadas en blockchain pueden enfrentar dificultades para manejar grandes volúmenes de transacciones en tiempo real, lo que podría afectar su rendimiento en entornos corporativos de gran escala.
+  \item \textbf{Interoperabilidad:} Integrar una PKI basada en blockchain con sistemas y aplicaciones existentes puede ser complejo, requiriendo desarrollos adicionales para asegurar una comunicación fluida entre diferentes plataformas.
+  \item \textbf{Resistencia al Cambio:} La adopción de nuevas tecnologías como blockchain puede encontrar resistencia dentro de la organización, especialmente si el personal no está familiarizado con su funcionamiento o beneficios.
+\end{itemize}
+
+\section*{Conclusión del Estado del Arte}
+Tras analizar los enfoques existentes en la literatura, no se identificaron propuestas que sigan una línea de desarrollo similar a la planteada en este trabajo. La mayoría de las soluciones revisadas se centran en \textit{la descentralización de la PKI mediante el uso de blockchain }, mientras que este estudio propone un enfoque basado en \textit{la incorporación de una PKI tradicional dentro de la arquitectura de Hyperledger Fabric}, permitiendo la autenticación de nodos y la gestión de certificados de manera eficiente dentro de un ecosistema blockchain empresarial.
+
+Dicho enfoque puede traer ventajas como:
+\begin{itemize}
+  \item \textbf{Aprovechamiento de Infraestructura Existente} – Permite reutilizar una PKI tradicional sin necesidad de rediseñar completamente el sistema de gestión de certificados.
+  \item \textbf{Autenticación Eficiente} – Facilita la validación de nodos dentro de Hyperledger Fabric sin depender exclusivamente de su mecanismo nativo de identidad.
+  \item \textbf{Cumplimiento Regulatorio} – Mantiene compatibilidad con estándares y normativas PKI, facilitando la adopción en entornos empresariales.
+  \item \textbf{Interoperabilidad} – Permite integrar soluciones blockchain con sistemas tradicionales que ya operan con PKI, mejorando la compatibilidad en infraestructuras híbridas.
+\end{itemize}

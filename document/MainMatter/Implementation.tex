@@ -1,0 +1,200 @@
+\chapter{Resultados y Discusión}\label{chapter:implementation}
+
+\section{Diseño del modelo}
+\begin{itemize}
+    \item Diseñar una API que funcione de CA de una PKI 
+    \item Configurar una red de Hyperledger Fabric\cite{hyperledgerfabric} capaz de usar los servicios de la PKI antes mencionada para autenticar sus nodos.
+\end{itemize}
+
+
+\section{Implementación de una PKI para la Autenticación de Nodos en Hyperledger Fabric}
+La autenticación de los nodos en una red de Hyperledger Fabric\cite{hyperledgerfabric} es un aspecto fundamental para garantizar la seguridad y confianza en las transacciones. Para ello, se diseñó una PKI basada en una API desarrollada en Node.js\cite{nodejs} que actúa como una Autoridad Certificadora (CA). Esta API tiene como función principal gestionar el proceso de emisión de certificados digitales, permitiendo la generación, firma y validación de los mismos. De esta manera, se asegura que cada nodo en la red posea una identidad verificable y protegida contra intentos de suplantación.
+
+\
+
+
+A continuación se detallará el proceso de implementación de los componentes de la PKI utilizando el framework Express\cite{express} de Node.js para la gestión de servicios REST, Axios\cite{axios} para la comunicación con los clientes y OpenSSL\cite{openssl} como herramienta para la generación de claves, certificados y firmas digitales. Además, se explicará cómo la API desarrollada permite la automatización de la gestión de identidades dentro de la red blockchain.
+
+\subsection{Descripción de la API PKI}
+
+La API desarrollada en Node.js\cite{nodejs} implementa los siguientes servicios principales:
+
+\begin{itemize}
+    \item \textbf{Generación y firma de certificados:} La API permite a los nodos solicitar certificados digitales firmados por la CA, asegurando que solo entidades legítimas puedan participar en la red.
+    \item \textbf{Validación de certificados:} A través de endpoints específicos, la API verifica la autenticidad de los certificados presentados por los nodos, permitiendo la detección de credenciales falsas o revocadas.
+    \item \textbf{Distribución de la CA:} Se proporciona un endpoint que retorna el certificado público de la CA, facilitando su uso para la validación de identidades dentro de la red.
+\end{itemize}
+
+\subsection{Generación del Certificado de la CA}
+
+Cuando la API inicia su operación, el primer paso es la generación del certificado raíz de la CA junto con su par de claves criptográficas. Para lograr esto, se utiliza el módulo \texttt{child\_process} de Node.js\cite{nodejs}, que permite ejecutar comandos del sistema. En este caso, se emplea OpenSSL\cite{openssl} para la creación de claves y certificados.
+
+El proceso de generación de la CA sigue los siguientes pasos:
+
+\begin{enumerate}
+    \item Se genera una clave privada utilizando el algoritmo ECDSA\cite{ecdsa} con la curva \texttt{prime256v1} (equivalente a P-256). Este algoritmo es requerido por Hyperledger Fabric para la gestión de identidades.
+    \item A partir de la clave privada, se genera un certificado autofirmado con una validez predefinida.
+    \item La clave privada y el certificado se almacenan en un directorio seguro dentro del servidor.
+\end{enumerate}
+
+El comando utilizado en OpenSSL para la generación de la clave privada es:
+
+\
+
+\small{\textbf{openssl ecparam -genkey -name prime256v1 -noout -out ca-key.pem}}
+
+\
+
+Posteriormente, el certificado autofirmado se genera con:
+
+\
+
+\small{\textbf{openssl req -x509 -new -key ca-key.pem -days 365 -out ca-cert.pem -subj "/CN=CA-Hyperledger"}}
+
+\
+
+Este certificado servirá como la base de confianza para la firma de certificados de los nodos en la red.
+
+\subsection{Proceso de Firma de Certificados}
+
+Una vez establecida la CA, se habilita un endpoint en la API denominado \texttt{/sign-csr}, encargado de recibir solicitudes de firma de certificados. El proceso de firma se describe a continuación:
+
+\begin{enumerate}
+    \item Un nodo genera una clave privada y un archivo de Solicitud de Firma de Certificado (CSR) en formato PEM.
+    \item El nodo envía el CSR al endpoint \texttt{/sign-csr} de la API.
+    \item La API verifica la validez del CSR y procede a firmarlo con la clave privada de la CA.
+    \item Se devuelve el certificado firmado al nodo solicitante en formato PEM.
+\end{enumerate}
+
+Para la firma del CSR, se emplea el siguiente comando de OpenSSL:
+
+\
+
+\small{\textbf{openssl x509 -req -in node-csr.pem -CA ca-cert.pem -CAkey ca-key.pem -CAcreateserial -out node-cert.pem -days 365}}
+
+\
+
+Este proceso garantiza que cada nodo en la red tenga una identidad única y verificable.
+
+
+La integración de una PKI en Hyperledger Fabric proporciona un mecanismo sólido para la autenticación de nodos dentro de la red blockchain. La implementación de una CA propia mediante una API permite gestionar de manera eficiente la identidad de los participantes, asegurando la confianza y seguridad en las transacciones.
+
+Además, el uso de OpenSSL en combinación con el módulo \texttt{child\_process} de Node.js ha permitido una generación y firma de certificados ágil y automatizada. Esto no solo optimiza el despliegue de la red, sino que también facilita su escalabilidad a futuro.
+
+En general, esta solución mejora significativamente la seguridad y gestión de identidades dentro de Hyperledger Fabric, estableciendo un modelo robusto de autenticación basado en PKI.
+\section{Características de Hyperledger Fabric}
+Hyperledger Fabric\cite{hyperledgerfabric} es una plataforma de blockchain modular y permisionada diseñada para aplicaciones empresariales. Su arquitectura se basa en una estructura flexible que permite la segmentación de la red en diferentes \textbf{canales}, la gestión descentralizada de organizaciones y la administración de identidades mediante \textbf{Membership Service Providers (MSP)}.
+
+
+\section{Gestión de Identidades en Hyperledger Fabric}
+
+Para administrar la identidad de los nodos y participantes en la red, Fabric emplea un sistema basado en \textbf{Membership Service Providers (MSP)}\cite{hyperledgerfabric}.
+
+\begin{itemize}
+    \item Un \textbf{MSP} es una estructura de carpetas que contiene los certificados y claves criptográficas necesarias para autenticar entidades en la red.
+    \item Cada organización debe contar con un MSP para sus nodos, lo que permite la verificación de identidad y la autorización de operaciones dentro del canal.
+    \item Fabric proporciona una herramienta llamada \textbf{Fabric CA}, que facilita la creación y gestión de certificados y la estructura MSP.
+\end{itemize}
+
+\subsubsection{Generación Manual del MSP}
+
+En caso de no utilizar \textbf{Fabric CA}, el MSP debe ser generado manualmente. Esto implica la creación de claves privadas, certificados de identidad y archivos de configuración que permitan la validación de los participantes en la red. Para ello, se pueden utilizar herramientas como \textbf{OpenSSL}\cite{openssl}, que permite la generación de certificados firmados por una CA personalizada.
+
+\subsection{Motivación para el Uso de Hyperledger Fabric}
+
+Hyperledger Fabric\cite{hyperledgerfabric} se ha convertido en una de las plataformas de blockchain más utilizadas en entornos empresariales debido a su diseño modular, flexibilidad y capacidad para gestionar identidades y permisos de forma granular. A diferencia de otras soluciones blockchain, Fabric no requiere criptomonedas para operar y permite la creación de redes privadas con control de acceso detallado.
+
+\subsubsection{Ventajas de la Integración con Hyperledger Fabric}
+
+El uso de Hyperledger Fabric en la autenticación de nodos mediante una PKI presenta múltiples ventajas, entre ellas:
+
+\begin{itemize}
+    \item \textbf{Alto nivel de modularización:} Hyperledger Fabric está diseñado como una plataforma modular, lo que permite adaptar y reemplazar componentes según las necesidades del sistema. Entre los módulos clave destacan:
+    \begin{itemize}
+        \item \textbf{Mecanismo de consenso configurable:} Fabric permite elegir entre diferentes algoritmos de consenso, como Raft o, a partir de la versión 3.0, un consenso basado en BFT-SMART, según los requisitos de la red.
+        \item \textbf{Servicios de identidad personalizados:} Permite la integración con infraestructuras de clave pública (PKI) para una autenticación segura.
+        \item \textbf{Soporte para múltiples bases de datos:} Fabric puede usar LevelDB o CouchDB para almacenar el estado del ledger.
+    \end{itemize}
+    
+    \item \textbf{Redes privadas y control de acceso:} A diferencia de blockchains públicas, Hyperledger Fabric permite definir permisos específicos para cada participante dentro de la red. Esto se logra mediante:
+    \begin{itemize}
+        \item \textbf{Canales privados:} Permiten la segmentación de datos para que solo ciertas organizaciones tengan acceso a determinada información.
+        \item \textbf{Gestión granular de identidades:} Cada nodo tiene credenciales únicas gestionadas mediante el Membership Service Provider (MSP).
+    \end{itemize}
+    
+    \item \textbf{Ejecución eficiente de contratos inteligentes:} Fabric introduce los \textbf{chaincodes}, que pueden ser escritos en múltiples lenguajes de programación como Go, Java y Node.js, facilitando la integración con sistemas empresariales.
+    
+    \item \textbf{Mejor rendimiento y escalabilidad:} La estructura modular de Fabric y el uso de validación por endoso permiten procesar transacciones en paralelo, optimizando el rendimiento de la red sin sacrificar seguridad.
+    
+    \item \textbf{Interoperabilidad y compatibilidad con estándares empresariales:} Fabric es compatible con múltiples soluciones empresariales, permitiendo la integración con bases de datos externas, servicios en la nube y herramientas de autenticación existentes.
+    
+\end{itemize}
+
+Gracias a estas características, Hyperledger Fabric se convierte en una plataforma ideal para la implementación de redes blockchain empresariales donde la seguridad, el control de acceso y la escalabilidad son factores clave.
+
+\section{Generación de Configuraciones de Red en Hyperledger Fabric}
+Para desplegar la red de Hyperledger Fabric, se ha implementado una aplicación cliente que genera las configuraciones necesarias basándose en un archivo YAML\cite{yaml} que debe ser proporcionado por el usuario con la siguiente estructura:
+
+\begin{itemize}
+    \item \textbf{Nombre de la red:} Se usa para definir el nombre del directorio principal.
+    \item \textbf{Orderers participantes:} Estos deben incluir su nombre y dominio en la red.
+    \item \textbf{Organizaciones:} Deben especificar igualmente sus nombres y dominio, autoseguidos por sus peers.
+    \item \textbf{Peers por organizaciones:} Deben especificar nombre y dominios.
+\end{itemize}
+
+Este archivo YAML es interpretado por la aplicación cliente para generar los directorios locales que definen la estructura de la red. Además, permite la autenticación de los nodos mediante la CA alojada en la API, siguiendo las especificaciones proporcionadas en el YAML.
+
+\subsection{Generación del Material Criptográfico y Configuración de la Red}
+Tras la autenticación de los nodos, se genera el material criptográfico necesario para la operación de la red:
+\begin{itemize}
+    \item Claves públicas y privadas de los nodos.
+    \item Certificados digitales emitidos por la CA.
+    \item Configuraciones base de la red, utilizando plantillas predefinidas personalizables.
+\end{itemize}
+Este material criptográfico es ubicado en los respectivos MSP de los peers y nodos de la red.
+
+\subsection{Uso de YAML para la Configuración de la Red}
+
+El uso de YAML\cite{yaml} para la configuración de la red en Hyperledger Fabric facilita su manejo en Node.js\cite{nodejs} mediante bibliotecas como \texttt{js-yaml}. Además, su formato es similar al utilizado por \texttt{cryptogen}, lo que reduce la curva de aprendizaje y mejora la compatibilidad con herramientas existentes.
+
+Este enfoque permite definir de manera clara y estructurada los nodos, certificados y asociaciones organizativas, facilitando la automatización del despliegue y la generación de directorios en el MSP de cada peer. Así, se optimiza la gestión de identidades y la escalabilidad del sistema.
+
+\subsection{Generación de configuraciones del canal, organizaciones y peers}
+
+Para completar el despliegue de la red, es necesario especificar un conjunto adicional de configuraciones en el archivo congigtx.yaml. Entre estas se incluyen las configuraciones del canal, los orderers, las organizaciones y los peers, junto con sus políticas y permisos de lectura y escritura.
+
+También es necesario un archivo de configuración para \texttt{docker-compose}, la herramienta que facilita el despliegue de múltiples nodos en la red. Estas configuraciones especificarán las rutas de los directorios MSP de los nodos, así como sus certificados y claves para la comunicación TLS, en caso de estar habilitada.
+
+Todo este proceso es automatizado por el cliente desarrollado en Node.js, utilizando la funcionalidad de evaluación en cadenas de texto para sustituir dinámicamente estas rutas en el archivo de configuración y los nombres de los nodos.
+\subsection{Creación del Bloque Génesis y el Canal}
+
+El paso final para desplegar la red es generar el bloque génesis a partir del perfil de configuración creado previamente (configtx.yaml). Este bloque se genera utilizando el comando \texttt{configtxgen}, especificando el perfil y la dirección de salida del archivo de configuración. El mismo procedimiento se aplica para la creación del canal.
+
+Para automatizar este proceso, se puede utilizar un script con comandos de Bash concatenados, de forma que, con solo ejecutar \texttt{./script.sh} en la consola, se ejecuten todos los comandos necesarios.
+
+\subsection{Despliegue de Contenedores de la Red en Docker}
+
+Una vez que se haya utilizado el archivo YAML de \texttt{docker-compose} para desplegar los contenedores, aún es necesario inicializar el canal a partir del bloque génesis. Para ello, es posible desplegar un contenedor basado en la imagen de \texttt{Fabric Tools} y utilizar el CLI a través del Bash de este contenedor. Este CLI actuará en nombre de algún peer u organización definida en la configuración.
+
+Una vez inicializado el canal, los peers podrán unirse sin problema, siempre y cuando sus certificados hayan sido emitidos por la CA de confianza de la red (la de la API).
+
+
+\section{Resultados y Beneficios de la Implementación}
+
+La implementación de esta PKI integrada con Hyperledger Fabric ha demostrado múltiples beneficios tanto en seguridad como en automatización y gestión de identidades dentro de la red blockchain.  
+
+\begin{itemize}
+    \item \textbf{Seguridad mejorada:} La utilización de una CA propia reduce la dependencia de servicios externos y mejora el control sobre la gestión de identidades. Al generar certificados y claves de forma interna, se garantiza que solo los nodos autorizados pueden participar en la red, minimizando riesgos de acceso no autorizado.
+    
+    \item \textbf{Automatización del despliegue:} La aplicación cliente en Node.js permite la generación automática de claves, certificados y configuraciones necesarias para la red. Esto simplifica el proceso de autenticación de los nodos y su incorporación a la red, eliminando la necesidad de configuraciones manuales complejas.
+    
+    \item \textbf{Gestión eficiente de identidades:} Hyperledger Fabric utiliza la estructura MSP (Membership Service Provider) para gestionar las credenciales de los nodos. La integración con la PKI facilita la generación y administración de estas credenciales, asegurando que cada peer y orderer cuente con los certificados adecuados para la autenticación y la firma de transacciones.
+    
+    \item \textbf{Flexibilidad en la configuración:} La definición de la infraestructura mediante archivos YAML permite una mayor flexibilidad y reutilización de configuraciones. Además, el uso de plantillas en la generación de configuraciones permite adaptar la red a distintos escenarios sin necesidad de cambios drásticos en la implementación.
+    
+    \item \textbf{Compatibilidad con herramientas de Hyperledger Fabric:} La estructura de los certificados y la configuración MSP generada sigue el estándar de Fabric, facilitando su integración con herramientas nativas como Fabric CA y Cryptogen. En caso de no utilizar estas herramientas, la solución implementada permite la generación manual de la MSP sin comprometer la compatibilidad.
+    
+    \item \textbf{Soporte para comunicación segura:} La generación de certificados también incluye los necesarios para establecer canales de comunicación TLS entre los nodos de la red, reforzando la seguridad de las transacciones y la integridad de los datos intercambiados.
+\end{itemize}
+
+En conclusión, la integración de una PKI en Hyperledger Fabric no solo facilita una autenticación segura y eficiente de los nodos, sino que también optimiza la gestión de identidades, mejora la automatización del despliegue y permite una administración más flexible de la red. Gracias a estos beneficios, la red blockchain puede operar con mayor confianza y estabilidad, asegurando que los participantes sean entidades verificadas y confiables.
